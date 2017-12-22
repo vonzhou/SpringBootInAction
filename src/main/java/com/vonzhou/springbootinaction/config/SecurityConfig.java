@@ -24,6 +24,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/login", "/style.css").permitAll();
         http.authorizeRequests().antMatchers("/**").hasAuthority("ROLE_READER");
         http.authorizeRequests().anyRequest().denyAll();
+
+        // 暂时通过禁掉csrf解决POST方法403的问题;也可以在form表单中嵌入csrf token解决.
+        http.csrf().disable();
     }
 
     @Override
@@ -33,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
                 UserDetails userDetails = readerRepository.findOne(username);
                 if (userDetails != null) {
-                  System.out.println(userDetails);
+                    System.out.println(userDetails);
                     return userDetails;
                 }
                 throw new UsernameNotFoundException("User '" + username + "' not found.");
