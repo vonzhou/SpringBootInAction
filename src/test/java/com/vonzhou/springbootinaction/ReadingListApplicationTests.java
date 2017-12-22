@@ -1,4 +1,4 @@
-package com.vonzhou.SpringBootInAction.chapter02;
+package com.vonzhou.SpringBootInAction;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
