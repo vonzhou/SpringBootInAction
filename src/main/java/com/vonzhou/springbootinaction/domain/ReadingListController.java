@@ -3,6 +3,7 @@ package com.vonzhou.springbootinaction.domain;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +12,19 @@ import javax.annotation.PostConstruct;
 
 @Controller
 @RequestMapping("/reading")
+@ConfigurationProperties(prefix = "amazon")
 public class ReadingListController {
 
     private ReadingListRepository readingListRepository;
 
     @Autowired
     private ReaderRepository readerRepository;
+
+    private String associateId;
+
+    public void setAssociateId(String associateId) {
+        this.associateId = associateId;
+    }
 
     @Autowired
     public ReadingListController(ReadingListRepository readingListRepository) {
@@ -32,12 +40,15 @@ public class ReadingListController {
         readerRepository.save(r);
     }
 
-    @RequestMapping(value = "/{reader}", method = RequestMethod.GET)
+    @GetMapping(value = "/{reader}")
     public String readersBooks(@PathVariable String reader, Model model) {
 
         List<Book> readingList = readingListRepository.findByReader(reader);
         if (readingList != null) {
             model.addAttribute("books", readingList);
+            model.addAttribute("amazonId", associateId);
+            model.addAttribute("reader", reader);
+
         }
         return "readingList";
     }

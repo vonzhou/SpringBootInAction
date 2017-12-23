@@ -1,0 +1,10 @@
+logging:
+  level:
+    root: WARN
+    org:
+      springframework:
+        security: DEBUG
+
+amazon:
+  associateId: vonzhou
+

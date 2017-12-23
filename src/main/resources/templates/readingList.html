@@ -6,6 +6,7 @@
 
 <body>
 <h2>Your Reading List</h2>
+AmazonID : <span th:text="${amazonId}"/>
 <div th:unless="${#lists.isEmpty(books)}">
     <dl th:each="book : ${books}">
         <dt class="bookHeadline">
