@@ -2,6 +2,7 @@ package com.vonzhou.springbootinaction.domain;
 
 import java.util.List;
 
+import com.vonzhou.springbootinaction.config.AmazonProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,6 @@ import javax.annotation.PostConstruct;
 
 @Controller
 @RequestMapping("/reading")
-@ConfigurationProperties(prefix = "amazon")
 public class ReadingListController {
 
     private ReadingListRepository readingListRepository;
@@ -20,11 +20,8 @@ public class ReadingListController {
     @Autowired
     private ReaderRepository readerRepository;
 
-    private String associateId;
-
-    public void setAssociateId(String associateId) {
-        this.associateId = associateId;
-    }
+    @Autowired
+    private AmazonProperties amazonProperties;
 
     @Autowired
     public ReadingListController(ReadingListRepository readingListRepository) {
@@ -46,7 +43,7 @@ public class ReadingListController {
         List<Book> readingList = readingListRepository.findByReader(reader);
         if (readingList != null) {
             model.addAttribute("books", readingList);
-            model.addAttribute("amazonId", associateId);
+            model.addAttribute("amazonId", amazonProperties.getAssociateId());
             model.addAttribute("reader", reader);
 
         }
