@@ -5,6 +5,9 @@ logging:
 amazon:
   associateId: vonzhou
 
+management:
+  security:
+    enabled: false
 ---
 
 spring:
