@@ -1,6 +1,7 @@
 package com.vonzhou.springbootinaction.config;
 
 import com.vonzhou.springbootinaction.domain.ReaderRepository;
+import com.vonzhou.springbootinaction.domain.ReaderUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,7 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private ReaderRepository readerRepository;
+    private ReaderUserDetailsService readerUserDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -31,17 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                UserDetails userDetails = readerRepository.findOne(username);
-                if (userDetails != null) {
-                    System.out.println(userDetails);
-                    return userDetails;
-                }
-                throw new UsernameNotFoundException("User '" + username + "' not found.");
-            }
-        });
+        auth.userDetailsService(readerUserDetailsService);
     }
 
 }
